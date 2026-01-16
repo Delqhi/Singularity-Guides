@@ -22,7 +22,7 @@ graph TD
     C --> D[Tool Execution]
     D --> E[Output Sanitization]
     E --> F[User Response]
-    
+
     B --> G[Rate Limiting]
     C --> H[Audit Logging]
     D --> I[Sandboxing]
@@ -64,14 +64,14 @@ graph TD
 
 ```typescript
 interface PermissionRule {
-  action: 'allow' | 'deny' | 'ask'
-  pattern: string
+  action: "allow" | "deny" | "ask";
+  pattern: string;
   conditions?: {
-    user?: string[]
-    environment?: string[]
-    time?: TimeRange
-    fileSize?: { min?: number, max?: number }
-  }
+    user?: string[];
+    environment?: string[];
+    time?: TimeRange;
+    fileSize?: { min?: number; max?: number };
+  };
 }
 ```
 
@@ -80,15 +80,15 @@ interface PermissionRule {
 ### Schema Validation
 
 ```typescript
-import { z } from 'zod'
+import { z } from "zod";
 
 const UserInputSchema = z.object({
   command: z.string().min(1).max(1000),
   args: z.array(z.string()).max(50),
-  options: z.record(z.unknown())
-})
+  options: z.record(z.unknown()),
+});
 
-const validated = UserInputSchema.parse(input)
+const validated = UserInputSchema.parse(input);
 ```
 
 ### Sanitization
@@ -97,18 +97,18 @@ const validated = UserInputSchema.parse(input)
 // Command sanitization
 const sanitizeCommand = (cmd: string): string => {
   // Remove dangerous characters
-  return cmd.replace(/[;&|`$()]/g, '')
-}
+  return cmd.replace(/[;&|`$()]/g, "");
+};
 
 // Path sanitization
 const sanitizePath = (path: string): string => {
   // Prevent directory traversal
-  const normalized = path.normalize()
-  if (normalized.includes('..')) {
-    throw new Error('Path traversal detected')
+  const normalized = path.normalize();
+  if (normalized.includes("..")) {
+    throw new Error("Path traversal detected");
   }
-  return normalized
-}
+  return normalized;
+};
 ```
 
 ## Tool Security
@@ -122,13 +122,13 @@ class SandboxedTool {
     const process = Bun.spawn(command, {
       cwd: this.workingDir,
       env: this.safeEnv,
-      timeout: 30000
-    })
-    
+      timeout: 30000,
+    });
+
     // Monitor resource usage
-    this.monitorResources(process)
-    
-    return await process.output()
+    this.monitorResources(process);
+
+    return await process.output();
   }
 }
 ```
@@ -137,11 +137,11 @@ class SandboxedTool {
 
 ```typescript
 const EXECUTION_LIMITS = {
-  timeout: 30000,      // 30 seconds
-  memory: '512MB',     // Memory limit
-  cpu: 0.5,           // CPU cores
-  network: false      // Network access
-}
+  timeout: 30000, // 30 seconds
+  memory: "512MB", // Memory limit
+  cpu: 0.5, // CPU cores
+  network: false, // Network access
+};
 ```
 
 ## Authentication & Authorization
@@ -152,15 +152,15 @@ const EXECUTION_LIMITS = {
 class KeyManager {
   async validateKey(key: string): Promise<boolean> {
     // Check key format
-    if (!this.isValidFormat(key)) return false
-    
+    if (!this.isValidFormat(key)) return false;
+
     // Verify against hashed storage
-    const hash = await this.hashKey(key)
-    return await this.checkHash(hash)
+    const hash = await this.hashKey(key);
+    return await this.checkHash(hash);
   }
-  
+
   private async hashKey(key: string): Promise<string> {
-    return await Bun.password.hash(key, 'argon2')
+    return await Bun.password.hash(key, "argon2");
   }
 }
 ```
@@ -169,12 +169,12 @@ class KeyManager {
 
 ```typescript
 interface SecureSession {
-  id: string
-  userId: string
-  permissions: PermissionSet
-  expiresAt: Date
-  ipAddress: string
-  userAgent: string
+  id: string;
+  userId: string;
+  permissions: PermissionSet;
+  expiresAt: Date;
+  ipAddress: string;
+  userAgent: string;
 }
 
 class SessionManager {
@@ -185,8 +185,8 @@ class SessionManager {
       permissions: this.calculatePermissions(user),
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
       ipAddress: this.getClientIP(),
-      userAgent: this.getUserAgent()
-    }
+      userAgent: this.getUserAgent(),
+    };
   }
 }
 ```
@@ -197,26 +197,26 @@ class SessionManager {
 
 ```typescript
 class DataEncryptor {
-  private key: CryptoKey
-  
+  private key: CryptoKey;
+
   async encrypt(data: string): Promise<string> {
-    const encoded = new TextEncoder().encode(data)
+    const encoded = new TextEncoder().encode(data);
     const encrypted = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv: this.generateIV() },
+      { name: "AES-GCM", iv: this.generateIV() },
       this.key,
-      encoded
-    )
-    return btoa(String.fromCharCode(...new Uint8Array(encrypted)))
+      encoded,
+    );
+    return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
   }
-  
+
   async decrypt(encrypted: string): Promise<string> {
-    const decoded = Uint8Array.from(atob(encrypted), c => c.charCodeAt(0))
+    const decoded = Uint8Array.from(atob(encrypted), (c) => c.charCodeAt(0));
     const decrypted = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: this.extractIV(decoded) },
+      { name: "AES-GCM", iv: this.extractIV(decoded) },
       this.key,
-      decoded
-    )
-    return new TextDecoder().decode(decrypted)
+      decoded,
+    );
+    return new TextDecoder().decode(decrypted);
   }
 }
 ```
@@ -226,16 +226,16 @@ class DataEncryptor {
 ```typescript
 class SecureStorage {
   async store(key: string, value: any): Promise<void> {
-    const encrypted = await this.encryptor.encrypt(JSON.stringify(value))
-    await this.storage.set(key, encrypted)
+    const encrypted = await this.encryptor.encrypt(JSON.stringify(value));
+    await this.storage.set(key, encrypted);
   }
-  
+
   async retrieve(key: string): Promise<any> {
-    const encrypted = await this.storage.get(key)
-    if (!encrypted) return null
-    
-    const decrypted = await this.encryptor.decrypt(encrypted)
-    return JSON.parse(decrypted)
+    const encrypted = await this.storage.get(key);
+    if (!encrypted) return null;
+
+    const decrypted = await this.encryptor.decrypt(encrypted);
+    return JSON.parse(decrypted);
   }
 }
 ```
@@ -247,61 +247,59 @@ class SecureStorage {
 ```typescript
 const server = Bun.serve({
   port: 3000,
-  hostname: '0.0.0.0',
-  
+  hostname: "0.0.0.0",
+
   tls: {
-    key: Bun.file('server.key'),
-    cert: Bun.file('server.crt')
+    key: Bun.file("server.key"),
+    cert: Bun.file("server.crt"),
   },
-  
+
   fetch: async (request) => {
     // Redirect HTTP to HTTPS
-    if (request.url.protocol === 'http:') {
-      return Response.redirect(
-        request.url.replace('http:', 'https:'),
-        301
-      )
+    if (request.url.protocol === "http:") {
+      return Response.redirect(request.url.replace("http:", "https:"), 301);
     }
-    
-    return handleRequest(request)
-  }
-})
+
+    return handleRequest(request);
+  },
+});
 ```
 
 ### CORS Configuration
 
 ```typescript
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGINS || 'https://singularity.ai',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Max-Age': '86400'
-}
+  "Access-Control-Allow-Origin":
+    process.env.ALLOWED_ORIGINS || "https://singularity.ai",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Max-Age": "86400",
+};
 ```
 
 ### Rate Limiting
 
 ```typescript
 class RateLimiter {
-  private requests = new Map<string, number[]>()
-  
+  private requests = new Map<string, number[]>();
+
   async checkLimit(identifier: string): Promise<boolean> {
-    const now = Date.now()
-    const window = 60 * 1000 // 1 minute
-    const maxRequests = 100
-    
-    const userRequests = this.requests.get(identifier) || []
-    
+    const now = Date.now();
+    const window = 60 * 1000; // 1 minute
+    const maxRequests = 100;
+
+    const userRequests = this.requests.get(identifier) || [];
+
     // Remove old requests
-    const recent = userRequests.filter(time => now - time < window)
-    
+    const recent = userRequests.filter((time) => now - time < window);
+
     if (recent.length >= maxRequests) {
-      return false
+      return false;
     }
-    
-    recent.push(now)
-    this.requests.set(identifier, recent)
-    return true
+
+    recent.push(now);
+    this.requests.set(identifier, recent);
+    return true;
   }
 }
 ```
@@ -315,25 +313,25 @@ class RateLimiter {
 ```typescript
 // SQL Injection protection
 const sanitizeSQL = (query: string): string => {
-  return query.replace(/['";\\]/g, '\\$&')
-}
+  return query.replace(/['";\\]/g, "\\$&");
+};
 
 // Command Injection prevention
 const safeExec = (command: string, args: string[]): Promise<string> => {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
-      stdio: 'pipe',
-      shell: false  // Prevent shell injection
-    })
-    
-    let output = ''
-    child.stdout.on('data', (data) => output += data)
-    child.on('close', (code) => {
-      if (code === 0) resolve(output)
-      else reject(new Error(`Command failed: ${code}`))
-    })
-  })
-}
+      stdio: "pipe",
+      shell: false, // Prevent shell injection
+    });
+
+    let output = "";
+    child.stdout.on("data", (data) => (output += data));
+    child.on("close", (code) => {
+      if (code === 0) resolve(output);
+      else reject(new Error(`Command failed: ${code}`));
+    });
+  });
+};
 ```
 
 #### 2. Broken Authentication
@@ -342,19 +340,19 @@ const safeExec = (command: string, args: string[]): Promise<string> => {
 class AuthManager {
   async authenticate(credentials: Credentials): Promise<Session> {
     // Multi-factor authentication
-    const user = await this.validateCredentials(credentials)
-    
+    const user = await this.validateCredentials(credentials);
+
     if (user.mfaEnabled) {
-      await this.verifyMFA(credentials.mfaCode)
+      await this.verifyMFA(credentials.mfaCode);
     }
-    
+
     // Session management
-    const session = await this.createSecureSession(user)
-    
+    const session = await this.createSecureSession(user);
+
     // Audit logging
-    await this.logAuthEvent('login', user.id)
-    
-    return session
+    await this.logAuthEvent("login", user.id);
+
+    return session;
   }
 }
 ```
@@ -364,23 +362,23 @@ class AuthManager {
 ```typescript
 // Data classification
 enum DataSensitivity {
-  PUBLIC = 'public',
-  INTERNAL = 'internal',
-  CONFIDENTIAL = 'confidential',
-  RESTRICTED = 'restricted'
+  PUBLIC = "public",
+  INTERNAL = "internal",
+  CONFIDENTIAL = "confidential",
+  RESTRICTED = "restricted",
 }
 
 // Automatic encryption
 const protectData = (data: any, sensitivity: DataSensitivity): any => {
   switch (sensitivity) {
     case DataSensitivity.PUBLIC:
-      return data
+      return data;
     case DataSensitivity.CONFIDENTIAL:
-      return encryptor.encrypt(JSON.stringify(data))
+      return encryptor.encrypt(JSON.stringify(data));
     case DataSensitivity.RESTRICTED:
-      return keyManager.encryptWithUserKey(data)
+      return keyManager.encryptWithUserKey(data);
   }
-}
+};
 ```
 
 ## Security Monitoring
@@ -389,30 +387,32 @@ const protectData = (data: any, sensitivity: DataSensitivity): any => {
 
 ```typescript
 interface AuditEvent {
-  timestamp: Date
-  userId: string
-  action: string
-  resource: string
-  result: 'success' | 'failure'
-  details: Record<string, any>
-  ipAddress: string
-  userAgent: string
+  timestamp: Date;
+  userId: string;
+  action: string;
+  resource: string;
+  result: "success" | "failure";
+  details: Record<string, any>;
+  ipAddress: string;
+  userAgent: string;
 }
 
 class AuditLogger {
   async log(event: AuditEvent): Promise<void> {
     // Structured logging
-    console.log(JSON.stringify({
-      level: 'audit',
-      ...event
-    }))
-    
+    console.log(
+      JSON.stringify({
+        level: "audit",
+        ...event,
+      }),
+    );
+
     // Persistent storage
-    await this.store.persist(event)
-    
+    await this.store.persist(event);
+
     // Real-time alerts for critical events
     if (this.isCriticalEvent(event)) {
-      await this.alertSystem.notify(event)
+      await this.alertSystem.notify(event);
     }
   }
 }
@@ -423,18 +423,18 @@ class AuditLogger {
 ```typescript
 class ThreatDetector {
   analyzeRequest(request: Request): ThreatLevel {
-    let score = 0
-    
+    let score = 0;
+
     // Check for suspicious patterns
-    if (this.containsSQLInjection(request)) score += 10
-    if (this.containsXSS(request)) score += 8
-    if (this.isBruteForce(request)) score += 15
-    if (this.isUnusualTraffic(request)) score += 5
-    
+    if (this.containsSQLInjection(request)) score += 10;
+    if (this.containsXSS(request)) score += 8;
+    if (this.isBruteForce(request)) score += 15;
+    if (this.isUnusualTraffic(request)) score += 5;
+
     // Geographic anomalies
-    if (this.isAnomalousLocation(request)) score += 7
-    
-    return this.calculateThreatLevel(score)
+    if (this.isAnomalousLocation(request)) score += 7;
+
+    return this.calculateThreatLevel(score);
   }
 }
 ```
@@ -457,22 +457,22 @@ class IncidentResponder {
   async handleIncident(incident: SecurityIncident): Promise<void> {
     // Log incident
     await auditLogger.log({
-      action: 'incident_detected',
-      details: incident
-    })
-    
+      action: "incident_detected",
+      details: incident,
+    });
+
     // Automated containment
-    await this.containThreat(incident)
-    
+    await this.containThreat(incident);
+
     // Notify team
     await notificationSystem.alert(
-      'Security Incident Detected',
-      incident.description
-    )
-    
+      "Security Incident Detected",
+      incident.description,
+    );
+
     // Escalate if critical
-    if (incident.severity === 'critical') {
-      await this.escalateToSecurityTeam(incident)
+    if (incident.severity === "critical") {
+      await this.escalateToSecurityTeam(incident);
     }
   }
 }
@@ -501,15 +501,15 @@ bun run security:infra
 ```typescript
 class ComplianceReporter {
   async generateReport(period: DateRange): Promise<ComplianceReport> {
-    const events = await auditLogger.getEvents(period)
-    
+    const events = await auditLogger.getEvents(period);
+
     return {
       period,
       totalEvents: events.length,
-      securityIncidents: events.filter(e => e.type === 'security').length,
+      securityIncidents: events.filter((e) => e.type === "security").length,
       compliance: this.checkCompliance(events),
-      recommendations: this.generateRecommendations(events)
-    }
+      recommendations: this.generateRecommendations(events),
+    };
   }
 }
 ```
@@ -534,6 +534,7 @@ class ComplianceReporter {
 ## Security Checklist
 
 ### Development Phase
+
 - [ ] Input validation on all user inputs
 - [ ] Secure coding practices
 - [ ] Dependency vulnerability scanning
@@ -541,6 +542,7 @@ class ComplianceReporter {
 - [ ] Automated security testing
 
 ### Deployment Phase
+
 - [ ] Secure configuration management
 - [ ] Environment-specific security settings
 - [ ] Access control implementation
@@ -548,6 +550,7 @@ class ComplianceReporter {
 - [ ] Monitoring and logging setup
 
 ### Operations Phase
+
 - [ ] Regular security updates
 - [ ] Incident response procedures
 - [ ] Security monitoring and alerting

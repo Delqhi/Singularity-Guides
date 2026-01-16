@@ -415,21 +415,235 @@ singularity plugin add @singularity-ai/filesystem
 
 ---
 
+## Official Singularity Plugins
+
+**Repository:** https://github.com/DeepthinkAI2025/SingularityPlugins
+
+### 🎯 Core Orchestration Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/master-orchestrator` | Multi-Agent Dispatcher | `orchestrate`, `list_agents` |
+| `@singularity-ai/conductor-tracks` | Netflix Conductor Workflows | `conductor_run`, `conductor_list` |
+| `@singularity-ai/lisa-loop` | 8-Phase Planning System | `lisa_plan`, `lisa_status` |
+| `@singularity-ai/multi-agent` | 20+ Agent Coordination | `agents_list`, `agents_spawn`, `agents_coordinate` |
+| `@singularity-ai/git-sync` | Enhanced Git Sync | `gitsync_status`, `gitsync_pull`, `gitsync_push` |
+| `@singularity-ai/quality-gates` | 7-Layer Validation | `quality_validate`, `quality_status` |
+
+### 🛡️ Security & Protection Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/security-fusion` | Comprehensive Security Suite | `security_scan`, `security_status` |
+| `@singularity-ai/auto-healing` | 4-Layer Error Recovery | `autohealing_health`, `autohealing_recover` |
+| `@singularity-ai/self-healing` | Self-Evolving Architecture | `selfhealing_status`, `selfhealing_evolve` |
+| `@singularity-ai/hacker-agent` | Penetration Testing | `hacker_audit`, `hacker_find漏洞` |
+| `@singularity-ai/master-hacker` | Elite Security Expert | `hack_penetrate` |
+
+### 🤖 Advanced AI Agent Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/ceo-agent` | Executive Decision Making | `ceo_decide`, `ceo_strategy` |
+| `@singularity-ai/developer-agent` | Master Developer | `dev_build`, `dev_review` |
+| `@singularity-ai/ai-architect` | System Architecture | `architect_design` |
+| `@singularity-ai/research-agent` | AI-Powered Research | `research_analyze`, `research_search` |
+| `@singularity-ai/ralph-loop` | Uncensored AI Cycle | `ralph_start`, `ralph_status` |
+| `@singularity-ai/devin-planning` | AI Project Planning | `devin_plan` |
+| `@singularity-ai/base-agent` | Foundation Agent | `base_execute` |
+
+### 🔮 Quantum & Advanced Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/quantum-orchestrator` | Quantum Orchestration | `quantum_orchestrate` |
+| `@singularity-ai/world-class-engine` | Premium Development | `worldclass_create` |
+| `@singularity-ai/autonomous-optimizer` | Self-Optimization | `optimize` |
+| `@singularity-ai/ultra-fast-router` | Ultra-Fast Command Router | `route` |
+| `@singularity-ai/real-time-collab` | Collaboration System | `collab_join` |
+
+### 🎨 Integration Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/tts` | Smart Text-to-Speech | `tts_speak`, `tts_voices` |
+| `@singularity-ai/vision` | Vision Quality Gate | `vision_analyze`, `vision_score` |
+| `@singularity-ai/video-generation` | AI Video Production | `video_generate`, `video_providers` |
+| `@singularity-ai/web-automation` | AI Web Operations | `automation_browse`, `automation_scrape` |
+| `@singularity-ai/canva` | Canva Integration | `canva_design` |
+
+### 🔧 Utility Plugins
+
+| Plugin | Description | Commands |
+|--------|-------------|----------|
+| `@singularity-ai/big-pickle` | Uncensored AI Model | `bigpickle_complete` |
+| `@singularity-ai/context-engine` | 1M Token Context | `context_analyze` |
+| `@singularity-ai/refactor` | Auto-Refactor | `refactor_code` |
+| `@singularity-ai/serena` | Serena MCP | `serena_query` |
+| `@singularity-ai/tavily` | Tavily Search | `tavily_search` |
+| `@singularity-ai/setup-automation` | Setup Automation | `setup_run` |
+| `@singularity-ai/advanced-monitoring` | Metrics Dashboard | `monitor_status`, `monitor_metrics` |
+| `@singularity-ai/auto-deployment` | Autonomous Deployment | `deploy_status`, `deploy_run` |
+| `@singularity-ai/master-start-script` | System Initialization | `init` |
+
+### 🌐 External Provider Plugins
+
+| Plugin | Description |
+|--------|-------------|
+| `antigravity-codex` | Google Antigravity Integration |
+| `claude-leaked` | Claude Leaked Features |
+| `chinese-providers` | Chinese AI Providers |
+| `kilo-code` | Kilo Code Integration |
+| `security-anti-leak-plugin` | Anti-Leak Protection |
+| `1m-token-context-engine-plugin` | Extended Context |
+| `autonomous-agent-economy-plugin` | Agent Economy |
+| `multimodal-code-generation-plugin` | Multimodal Generation |
+| `realtime-codebase-understanding-plugin` | Codebase Analysis |
+
+---
+
+## Installation Examples
+
+### Install Core Plugins
+
+```bash
+# Orchestration
+singularity plugin add @singularity-ai/master-orchestrator
+singularity plugin add @singularity-ai/conductor-tracks
+singularity plugin add @singularity-ai/lisa-loop
+
+# Security
+singularity plugin add @singularity-ai/security-fusion
+singularity plugin add @singularity-ai/auto-healing
+
+# AI Agents
+singularity plugin add @singularity-ai/ceo-agent
+singularity plugin add @singularity-ai/developer-agent
+singularity plugin add @singularity-ai/research-agent
+```
+
+### Install All Plugins at Once
+
+```bash
+# From GitHub
+singularity plugin add github:DeepthinkAI2025/SingularityPlugins
+
+# Or clone and install locally
+git clone https://github.com/DeepthinkAI2025/SingularityPlugins.git
+cd SingularityPlugins
+# Install each plugin
+for dir in */; do
+  singularity plugin add "./${dir%/}"
+done
+```
+
+### Configuration
+
+```json
+{
+  "plugins": {
+    "enabled": [
+      "@singularity-ai/master-orchestrator",
+      "@singularity-ai/ceo-agent",
+      "@singularity-ai/developer-agent",
+      "@singularity-ai/security-fusion",
+      "@singularity-ai/auto-healing"
+    ],
+    "config": {
+      "@singularity-ai/tts": {
+        "enabled": true,
+        "defaultVoice": "german-female-empathetic"
+      },
+      "@singularity-ai/vision": {
+        "targetScore": 8.5,
+        "autoFix": true
+      },
+      "@singularity-ai/quality-gates": {
+        "threshold": 7.5
+      }
+    }
+  }
+}
+```
+
+---
+
+## Agent Usage Examples
+
+### CEO Agent - Strategic Decisions
+
+```bash
+# Make executive decision
+singularity ceo_decide "Enter new market" --options ["aggressive", "conservative", "wait"]
+
+# Develop strategy
+singularity ceo_strategy "Increase revenue by 50%"
+```
+
+### Developer Agent - Build Systems
+
+```bash
+# Build complete system
+singularity dev_build "E-commerce platform with React and Node.js"
+
+# Review code
+singularity dev_review "./src/auth.ts"
+```
+
+### Security Agent - Penetration Testing
+
+```bash
+# Security audit
+singularity hacker_audit "https://api.example.com"
+
+# Find vulnerabilities
+singularity hacker_find漏洞 "./src/user.ts"
+```
+
+### Research Agent - AI Research
+
+```bash
+# Analyze topic
+singularity research_analyze "Quantum computing 2026"
+
+# Search information
+singularity research_search "AI agents architecture patterns"
+```
+
+---
+
+## Plugin Development from Migration
+
+### Converting Migration Features to Plugins
+
+Each feature from `/Users/jeremy/.singularity-migration/.claude/EXECUTORS/` can be converted:
+
+```bash
+# Example: Convert quantum-orchestrator.js
+singularity plugin create quantum-orchestrator
+
+# Structure
+quantum-orchestrator/
+├── package.json          # Plugin metadata
+├── tsconfig.json        # TypeScript config
+├── src/
+│   ├── index.ts         # Plugin entry point
+│   └── tools/
+│       └── quantum-orchestrator.ts  # Tool implementation
+└── README.md            # Documentation
+```
+
+### Best Practices for Migration Plugins
+
+1. **Keep Same Version**: Use `5.0.0` to match migration
+2. **Preserve Functionality**: Maintain original behavior
+3. **Add Type Safety**: Convert JS to TypeScript
+4. **Update Imports**: Use `@singularity-ai/plugin`
+5. **Add Logging**: Console logs for debugging
+
+---
+
 ## Community Plugins
-
-### awesome-opencode
-
-Find more plugins at: https://github.com/anomalyco/awesome-opencode
-
-### Singularity Plugins
-
-Our custom plugins: https://github.com/DeepthinkAI2025/SingularityPlugins
-
-**Available Plugins:**
-- `@singularity-ai/database` - Database operations
-- `@singularity-ai/docker` - Docker container management
-- `@singularity-ai/kubernetes` - K8s cluster management
-- `@singularity-ai/api-gateway` - API documentation
 
 ---
 
@@ -641,3 +855,5 @@ See these plugins for reference:
 ---
 
 **Last Updated**: 2026-01-16
+**Total Plugins**: 50+
+**Repository**: https://github.com/DeepthinkAI2025/SingularityPlugins

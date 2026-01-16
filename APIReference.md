@@ -23,15 +23,15 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 
 ```typescript
 // Client-side authentication
-const auth = await fetch('/oauth/authorize', {
-  method: 'POST',
+const auth = await fetch("/oauth/authorize", {
+  method: "POST",
   body: JSON.stringify({
-    client_id: 'your-client-id',
-    scope: 'read write'
-  })
-})
+    client_id: "your-client-id",
+    scope: "read write",
+  }),
+});
 
-const token = await auth.json()
+const token = await auth.json();
 ```
 
 ## Sessions API
@@ -54,6 +54,7 @@ Authorization: Bearer {token}
 ```
 
 **Response:**
+
 ```json
 {
   "id": "session_123",
@@ -77,6 +78,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "id": "msg_456",
@@ -93,6 +95,7 @@ GET /sessions/{session_id}/status
 ```
 
 **Response:**
+
 ```json
 {
   "status": "active",
@@ -110,6 +113,7 @@ GET /tools
 ```
 
 **Response:**
+
 ```json
 {
   "tools": [
@@ -139,6 +143,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -156,6 +161,7 @@ GET /agents
 ```
 
 **Response:**
+
 ```json
 {
   "agents": [
@@ -205,6 +211,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "result": "## PR Review\n\n### Security Issues\n- Potential XSS vulnerability in user input...",
@@ -238,6 +245,7 @@ GET /projects/{project_id}/status
 ```
 
 **Response:**
+
 ```json
 {
   "id": "proj_123",
@@ -277,6 +285,7 @@ GET /mcp/servers
 ```
 
 **Response:**
+
 ```json
 {
   "servers": [
@@ -308,29 +317,33 @@ Content-Type: application/json
 ### Real-time Session Updates
 
 ```javascript
-const ws = new WebSocket('wss://api.singularity.ai/v1/sessions/{session_id}/stream')
+const ws = new WebSocket(
+  "wss://api.singularity.ai/v1/sessions/{session_id}/stream",
+);
 
 ws.onmessage = (event) => {
-  const data = JSON.parse(event.data)
-  
+  const data = JSON.parse(event.data);
+
   switch (data.type) {
-    case 'message':
-      console.log('New message:', data.message)
-      break
-    case 'tool_execution':
-      console.log('Tool executed:', data.tool)
-      break
-    case 'status_change':
-      console.log('Status changed:', data.status)
-      break
+    case "message":
+      console.log("New message:", data.message);
+      break;
+    case "tool_execution":
+      console.log("Tool executed:", data.tool);
+      break;
+    case "status_change":
+      console.log("Status changed:", data.status);
+      break;
   }
-}
+};
 
 // Send message
-ws.send(JSON.stringify({
-  type: 'message',
-  content: 'Hello AI assistant'
-}))
+ws.send(
+  JSON.stringify({
+    type: "message",
+    content: "Hello AI assistant",
+  }),
+);
 ```
 
 ## Plugins API
@@ -355,6 +368,7 @@ GET /plugins
 ```
 
 **Response:**
+
 ```json
 {
   "plugins": [
@@ -384,6 +398,7 @@ Content-Type: application/json
 ```
 
 **Response (chunked):**
+
 ```
 data: {"type": "start"}
 
@@ -461,17 +476,17 @@ npm install @singularity-ai/sdk
 ```
 
 ```typescript
-import { Singularity } from '@singularity-ai/sdk'
+import { Singularity } from "@singularity-ai/sdk";
 
 const client = new Singularity({
-  apiKey: 'your-api-key'
-})
+  apiKey: "your-api-key",
+});
 
 const session = await client.sessions.create({
-  model: 'opencode/big-pickle'
-})
+  model: "opencode/big-pickle",
+});
 
-const response = await session.sendMessage('Hello world')
+const response = await session.sendMessage("Hello world");
 ```
 
 ### Python SDK
@@ -504,11 +519,11 @@ import (
 
 func main() {
     client := singularity.NewClient("your-api-key")
-    
+
     session, _ := client.Sessions.Create(&singularity.SessionConfig{
         Model: "opencode/big-pickle",
     })
-    
+
     response, _ := session.SendMessage("Hello world")
 }
 ```
@@ -545,17 +560,21 @@ Content-Type: application/json
 ### Webhook Verification
 
 ```typescript
-const verifyWebhook = (payload: string, signature: string, secret: string): boolean => {
+const verifyWebhook = (
+  payload: string,
+  signature: string,
+  secret: string,
+): boolean => {
   const expected = crypto
-    .createHmac('sha256', secret)
+    .createHmac("sha256", secret)
     .update(payload)
-    .digest('hex')
-  
+    .digest("hex");
+
   return crypto.timingSafeEqual(
     Buffer.from(signature),
-    Buffer.from(`sha256=${expected}`)
-  )
-}
+    Buffer.from(`sha256=${expected}`),
+  );
+};
 ```
 
 This comprehensive API reference enables full integration with Singularity Code's capabilities for automated development workflows.

@@ -14,17 +14,20 @@ Welcome to the **Singularity Guides** repository! This is your comprehensive res
 ## 📚 Guide Index
 
 ### Core Concepts
+
 - **[Overview](./Overview.md)** - What is Singularity Code and its key features
 - **[Directory Structure](./DirectoryStructure.md)** - Repository organization and file conventions
 - **[Rules System](./RulesSystem.md)** - Permission-based security and access control
 
 ### Development
+
 - **[Commands System](./CommandsSystem.md)** - Custom slash commands and automation
 - **[Agents System](./AgentsSystem.md)** - Specialized AI assistants and their configuration
 - **[Plugins System](./PluginsSystem.md)** - Extensibility through modular plugins
 - **[Development Workflow](./DevelopmentWorkflow.md)** - Build, test, and deployment processes
 
 ### Advanced Topics
+
 - **[Security Guide](./SecurityGuide.md)** - OWASP compliance and best practices
 - **[API Reference](./APIReference.md)** - Complete HTTP API documentation
 - **[Future Vision](./FutureVision.md)** - 2026 technologies and roadmap
@@ -165,7 +168,7 @@ Based on OpenCode (MIT License). Singularity Code extends and enhances the origi
 - [ ] Test all implementations on Mac M1
 - [ ] Update GitHub repository with Phase 1 code
 
-*See `opencode/plans/AUTONOMOUS-CEO-T+495` for detailed implementation plans.*
+_See `opencode/plans/AUTONOMOUS-CEO-T+495` for detailed implementation plans._
 
 ---
 
