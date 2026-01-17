@@ -43,13 +43,13 @@ graph TB
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/DeepthinkAI2025/singularity-code.git`
+1. Clone the repository: `git clone https://github.com/Delqhi/singularity-code.git`
 2. Install dependencies: `bun install`
 3. Build: `bun run build`
 4. Start: `singularity`
 
 ## Related Repositories
 
-- [Singularity Code](https://github.com/DeepthinkAI2025/singularity-code.git) - Main codebase
-- [Singularity Plugins](https://github.com/DeepthinkAI2025/SingularityPlugins.git) - Custom plugins
+- [Singularity Code](https://github.com/Delqhi/singularity-code.git) - Main codebase
+- [Singularity Plugins](https://github.com/Delqhi/SingularityPlugins.git) - Custom plugins
 - [Awesome OpenCode](https://github.com/awesome-opencode/awesome-opencode) - Community resources
